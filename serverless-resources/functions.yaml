@@ -1,0 +1,228 @@
+ListClaimsPerMember:
+  handler: src/handlers/listClaimsPerMember-handler.handler
+  role: ListClaimsPerMemberRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/claims
+        method: get
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+ListDependantsPerMember:
+  handler: src/handlers/listDependantsPerMember-handler.handler
+  role: ListDependantsPerMemberRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/dependants
+        method: get
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+GetAllInfoPerMember:
+  handler: src/handlers/getAllInfoBYUUID-handler.handler
+  role: GetAllInfoMemberRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/allinfo
+        method: get
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+CreateClaim:
+  handler: src/handlers/createClaim-handler.handler
+  role: CreateClaimRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/claims
+        method: post
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+UpdateClaim:
+  handler: src/handlers/updateClaim-handler.handler
+  role: UpdateClaimRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/claims_edit
+        method: post
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+StoreEOB:
+  handler: src/handlers/storeEOB-handler.handler
+  role: StoreEOBRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/eobs
+        method: post
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+    eobBucket: ppr-eob-files-${sls:stage}
+
+FindMembers:
+  handler: src/handlers/findMembers-handler.handler
+  role: FindMembersRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/members
+        method: get
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+CreateMembers:
+  handler: src/handlers/createMember-handler.handler
+  role: CreateMembersRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/members
+        method: post
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+CreateDependants:
+  handler: src/handlers/createDependant-handler.handler
+  role: CreateDependantsRole # IAM execution role from iam-roles.yaml
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/dependents
+        method: post
+        cors: true
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+GetEOB:
+  handler: src/handlers/getEOB-handler.handler
+  role: GetEOBRole # IAM execution role from iam-roles.yaml
+  memorySize: 512 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 240 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  reservedConcurrency: 20
+  events:
+    - http:
+        path: /api/eobs
+        method: get
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - ${file(serverless.${sls:stage}.yml):vpcDynamoSGID}
+      - !Ref AdminAPIGatewaySecurityGroup
+      - ${file(serverless.${sls:stage}.yml):vpcEgressSG}
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}
+
+GetPingIDEnvironment:
+  handler: src/handlers/getPingIDEnvironment-handler.handler
+  role: GetPingIDRole # IAM execution role from iam-roles.yaml (TODO)
+  memorySize: 256 # Default is 1024, tune using MemoryUsedInMB from CloudWatch logs
+  timeout: 500 # Default is 6 seconds, max is 15 minutes, API Gateway max is 30 seconds, tune using DurationInMS from CloudWatch logs
+  events:
+    - http:
+        path: /api/env
+        method: get
+  vpc:
+    securityGroupIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):vpcResourceSG}
+      - !Ref AdminAPIGatewaySecurityGroup
+    subnetIds:
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1A}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1B}
+      - !ImportValue ${file(serverless.${sls:stage}.yml):PrivateSubnet1C}

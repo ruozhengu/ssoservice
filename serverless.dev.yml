@@ -1,0 +1,22 @@
+PrivateSubnet1A: ca-ppr-vpc-dev-PrivateSubnet1A
+PrivateSubnet1B: ca-ppr-vpc-dev-PrivateSubnet1B
+PrivateSubnet1C: ca-ppr-vpc-dev-PrivateSubnet1C
+BankingInfoTableName: ppr-banking-info-dynamo-dev
+BankingInfoTableNameARN: arn:aws:dynamodb:ca-central-1:970767271337:table/ppr-banking-info-dynamo-dev
+ClaimsTableName: ppr-claims-dynamo-dev
+ClaimsTableNameARN: arn:aws:dynamodb:ca-central-1:970767271337:table/ppr-claims-dynamo-dev
+SessionsTableName: ppr-sessions-dynamo-dev
+SessionsTableNameARN: arn:aws:dynamodb:ca-central-1:970767271337:table/ppr-sessions-dynamo-dev
+ERecordsTableName: ppr-e-records-dynamo-dev
+ERecordsTableNameARN: arn:aws:dynamodb:ca-central-1:970767271337:table/ppr-e-records-dynamo-dev
+CRecordsTableName: ppr-c-records-dynamo-dev
+CRecordsTableNameARN: arn:aws:dynamodb:ca-central-1:970767271337:table/ppr-c-records-dynamo-dev
+vpcName: vpc-0a1d01db5869dcfc4
+vpcResourceSG: ca-ppr-vpc-dev-VpcResourceSG # Dev VPC Resource SG export
+vpcDynamoSGID: sg-005c1533d9a7df2dc
+vpcEgressSG: sg-03e6aed3907d67e74
+PING_ID_ISSUER: https://qa.sso.securian.com
+PING_ID_AUTH_PATH: https://qa.sso.securian.com/as/authorization.oauth2
+PING_ID_INTROSPECT_PATH: https://qa.sso.securian.com/as/introspect.oauth2
+PING_ID_REDIRECT_PATH: https://dppradmin.securiancanada.ca
+PING_ID_CLIENT_ID: PPRAdminOAuthNonprod

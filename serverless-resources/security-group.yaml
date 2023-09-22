@@ -1,0 +1,10 @@
+Resources:
+  AdminAPIGatewaySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows traffic from API Gateway Security Group
+      SecurityGroupEgress:
+        - Description: No Egress from API Gateway VPC Endpoint
+          IpProtocol: "-1"
+          CidrIp: 127.0.0.1/32
+      VpcId: !Sub "${file(serverless.${sls:stage}.yml):vpcName}"

@@ -1,0 +1,331 @@
+Resources:
+  GetPingIDRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminGetPingIDRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+
+  ListClaimsPerMemberRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminListClaimsPerMemberRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+
+  CreateClaimRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminCreateClaimRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+
+  GetAllInfoMemberRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminGetAllInfoMemberRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}/index/*
+                  - ${file(serverless.${sls:stage}.yml):CRecordsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):BankingInfoTableNameARN}
+
+  UpdateClaimRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminUpdateClaimRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+
+  StoreEOBRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminStoreEOBRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: S3Write
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                Resource:
+                  - arn:aws:s3:::ppr-eob-files-${sls:stage}
+                  - arn:aws:s3:::ppr-eob-files-${sls:stage}/*
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+
+  FindMembersRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminFindMembersRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                  - dynamodb:GetItem
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):CRecordsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}/index/*
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+
+  GetEOBRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminAdminGetEOBRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDBPut
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ClaimsTableNameARN}
+        - PolicyName: S3Read
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource:
+                  - arn:aws:s3:::ppr-eob-files-${sls:stage}
+                  - arn:aws:s3:::ppr-eob-files-${sls:stage}/*
+
+  CreateDependantsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminCreateDependantsRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):CRecordsTableNameARN}
+
+  CreateMembersRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminCreateMembersRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}/index/*
+
+  ListDependantsPerMemberRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      RoleName: SFGAppPPRAdminListDependantsPerMemberRole-${sls:stage} # this MUST start with SFGApp
+      PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/SFGPermissionsBoundary
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole # Needed for VPC attachment. Includes permissions of basic policy
+      Policies:
+        - PolicyName: DynamoDB
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                Resource:
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}
+                  - ${file(serverless.${sls:stage}.yml):ERecordsTableNameARN}/index/*

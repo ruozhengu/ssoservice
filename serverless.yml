@@ -1,0 +1,49 @@
+service: securian-ca-ppr-admin-services
+
+custom:
+  stackTags:
+    SFGCost1: "9783"
+    SFGCost2: "00342"
+  prune:
+    automatic: true
+    number: 5
+
+package:
+
+plugins:
+  - serverless-webpack
+  - serverless-prune-plugin
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: ca-central-1
+  stackTags: ${file(${env:STACK_TAGS_FILE, 'dummy.yaml'}), null}
+  iam:
+    deploymentRole: ${env:CFN_ROLE, null}
+  environment:
+    POWERTOOLS_SERVICE_NAME: securian-ca-ppr-admin-services
+    LOG_LEVEL: INFO
+    NODE_OPTIONS: --enable-source-maps
+    BankingInfoTable: ${file(serverless.${sls:stage}.yml):BankingInfoTableName}
+    ClaimsTable: ${file(serverless.${sls:stage}.yml):ClaimsTableName}
+    SessionsTable: ${file(serverless.${sls:stage}.yml):SessionsTableName}
+    ERecordsTable: ${file(serverless.${sls:stage}.yml):ERecordsTableName}
+    CRecordsTable: ${file(serverless.${sls:stage}.yml):CRecordsTableName}
+    eobBucket: ppr-eob-files-${sls:stage}
+    PING_ID_AUTH_PATH: ${file(serverless.${sls:stage}.yml):PING_ID_AUTH_PATH}
+    PING_ID_INTROSPECT_PATH: ${file(serverless.${sls:stage}.yml):PING_ID_INTROSPECT_PATH}
+    PING_ID_REDIRECT_PATH: ${file(serverless.${sls:stage}.yml):PING_ID_REDIRECT_PATH}
+    PING_ID_CLIENT_ID: ${file(serverless.${sls:stage}.yml):PING_ID_CLIENT_ID}
+    PING_ID_ISSUER: ${file(serverless.${sls:stage}.yml):PING_ID_ISSUER}
+  s3:
+    eobBucket:
+      name: ppr-eob-files-${sls:stage}
+
+functions: ${file(serverless-resources/functions.yaml)}
+
+resources:
+  - ${file(serverless-resources/iam-roles.yaml)}
+  - ${file(serverless-resources/s3-buckets.yaml)}
+  - ${file(serverless-resources/security-group.yaml)}

@@ -1,0 +1,15 @@
+//Configuration for Typescript
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "outDir": "dist",
+    "sourceMap": true,    
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types" //Also allow app to scan @types modules rather than just surface level dependencies
+    ],
+    "target": "ES2015",
+    "moduleResolution": "Node16"
+  }
+}

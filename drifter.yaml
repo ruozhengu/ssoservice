@@ -1,0 +1,10 @@
+settings:
+  defaultBranch: master
+templates:
+  - repo: actions-workflows
+    files:
+      .github/workflows/ci.yaml: ci/baboon-node18.yaml
+      .github/workflows/elbe.yaml: run/elbe.yaml
+  - repo: ecs-actions-linter-action
+    files:
+      .github/workflows/ecs-lint.yaml: sample-workflow.yaml

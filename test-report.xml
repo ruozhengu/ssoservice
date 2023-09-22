@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="C:\AppDev\securian-ca-ppr-admin-services\src\__tests__\handlers\createClaim-handler.test.ts">
+    <testCase name="test dynamo service Get item from the DynamoDB" duration="2"/>
+  </file>
+</testExecutions>

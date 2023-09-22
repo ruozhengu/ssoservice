@@ -1,0 +1,77 @@
+{
+  "name": "securian-ca-ppr-admin-services",
+  "version": "1.0.5",
+  "private": true,
+  "license": "UNLICENSED",
+  "sideEffects": false,
+  "scripts": {
+    "invoke-local": "set NODE_OPTIONS=\"--enable-source-maps\"&& serverless invoke local --stage local --function CreateClaim",
+    "test": "jest",
+    "lint": "eslint \"**/*.js\" \"**/*.ts\" --cache",
+    "prepare": "husky install",
+    "format-check": "prettier --check \"**/*.js\" \"**/*.ts\"",
+    "format": "prettier --write \"**/*.js\" \"**/*.ts\""
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/aws-lambda": "^8.10.114",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.16.4",
+    "@types/nodemailer": "^6.4.7",
+    "@types/pdfmake": "^0.2.2",
+    "@types/sanitize-html": "^2.9.0",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "aws-sdk-client-mock": "^2.1.1",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "husky": "^8.0.3",
+    "jest": "^29.5.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "prettier": "2.8.7",
+    "sanitize-html": "^2.10.0",
+    "semver": "^7.5.4",
+    "serverless": "^3.34.0",
+    "serverless-prune-plugin": "^2.0.2",
+    "serverless-python-requirements": "^6.0.0",
+    "serverless-s3-sync": "^3.1.0",
+    "serverless-webpack": "^5.11.0",
+    "source-map-loader": "^4.0.1",
+    "ts-jest": "^29.0.5",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.3",
+    "webpack": "^5.77.0"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^1.8.0",
+    "@aws-sdk/client-s3": "^3.409.0",
+    "@aws-sdk/client-secrets-manager": "^3.332.0",
+    "@aws-sdk/client-sqs": "^3.328.0",
+    "@aws-sdk/lib-dynamodb": "^3.321.1",
+    "@aws-sdk/util-stream-node": "^3.321.1",
+    "@types/node-fetch": "^2.6.3",
+    "aws-crt": "^1.18.0",
+    "axios": "^1.4.0",
+    "fetch": "^1.1.0",
+    "handlebars": "^4.7.7",
+    "node-fetch": "^2.6.9",
+    "nodemailer": "^6.9.1",
+    "pdf-lib": "^1.17.1",
+    "pdfmake": "^0.2.7",
+    "raw-loader": "^4.0.2",
+    "sanitize-html": "^2.10.0"
+  },
+  "overrides": {
+    "istanbul-lib-instrument": {
+      "semver": "$semver"
+    },
+    "cross-spawn": {
+      "semver": "$semver"
+    },
+    "make-dir": {
+      "semver": "$semver"
+    }
+  }
+}

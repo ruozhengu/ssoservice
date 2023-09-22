@@ -1,0 +1,22 @@
+# Standard Securian S3 configuration for deployment bucket
+Resources:
+  S3BucketEOBFilesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: ppr-eob-files-${sls:stage}
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !GetAtt StoreEOBRole.Arn
+                - !GetAtt GetEOBRole.Arn
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:GetObject
+              - s3:GetObjectAcl
+              - s3:PutObjectAcl
+            Resource:
+              - arn:aws:s3:::ppr-eob-files-${sls:stage}
+              - arn:aws:s3:::ppr-eob-files-${sls:stage}/*
